@@ -5,13 +5,12 @@ import sys
 import pickle
 
 salida_comando = []
+file_name = "salida.p"
 
 try:
-    salida = pickle.load( open( "salida.p", "rb" ) )
+    salida = pickle.load( open( file_name, "rb" ) )
 except:
     salida = {}
-
-print(salida)
 
 try:
     p = subprocess.run(['pinky'], capture_output=True)
@@ -25,26 +24,18 @@ except:
 
 salida_comando=salida_comando[6:]
 
-salida_comando.extend(salida_comando)
-salida_comando[11] = salida_comando[11][:-1] +"5"
-
-print(len(salida_comando),salida_comando)
-
-
-
 for i in range(0,len(salida_comando)-1,7):
+    print(i)
     login = salida_comando[i]
-    print(i+4)
     fecha = salida_comando[i+4]
     hora = salida_comando[i+5]
     ip = salida_comando[i+6]
-    fecha_hora =" ".join([fecha,hora])
+    fecha_hora = " ".join([fecha,hora])
     if ip in salida:
         salida[ip].add(fecha_hora)
     else:
         salida[ip]=set([fecha_hora])
 
 
-pickle.dump( salida, open( "salida.p", "wb" ) )
-
-print(salida)
+pickle.dump( salida, open( file_name, "wb" ) )
+sys.exit(0)
