@@ -5,7 +5,7 @@ import sys
 import pickle
 
 salida_comando = []
-file_name = "~/Develop/pinky_list/salida.p"
+file_name = "salida.p"
 
 try:
     salida = pickle.load( open( file_name, "rb" ) )
@@ -14,22 +14,23 @@ except:
 
 try:
     p = subprocess.run(['pinky'], capture_output=True)
-    salida_comando = p.stdout.decode().split()
+    salida_comando = p.stdout.decode().split("\n")
 
     if p.returncode !=0:
         print(p.stderr.decode())
         sys.exit(1)
 except:
     sys.exit(1)
+print(salida_comando)
+# salida_comando=salida_comando[6:]
 
-salida_comando=salida_comando[6:]
-
-for i in range(0,len(salida_comando)-1,7):
-    print(i)
-    login = salida_comando[i]
-    fecha = salida_comando[i+4]
-    hora = salida_comando[i+5]
-    ip = salida_comando[i+6]
+for line in salida_comando[1:-1]:
+    print(line)
+    line_split = line.split()
+    login = line_split[0]
+    fecha = line_split[-3]
+    hora = line_split[-2]
+    ip = line_split[-1]
     fecha_hora = " ".join([fecha,hora])
     if ip in salida:
         salida[ip].add(fecha_hora)

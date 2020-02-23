@@ -6,7 +6,7 @@ import pickle
 import pprint
 
 salida_comando = []
-file_name = "~/Develop/pinky_list/salida.p"
+file_name = "salida.p"
 
 try:
     salida = pickle.load( open( file_name, "rb" ) )
